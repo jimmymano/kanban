@@ -1,8 +1,9 @@
+// Const's for HTML elements
 const addBtns = document.querySelectorAll('.add-btn:not(.solid)');
 const saveItemBtns = document.querySelectorAll('.solid');
 const addItemContainers = document.querySelectorAll('.add-container');
 const addItems = document.querySelectorAll('.add-item');
-// Item Lists
+// Item Lists (Unodered lists that hold all our items)
 const itemLists = document.querySelectorAll('.drag-item-list');
 const backlogList = document.getElementById('backlog-list');
 const progressList = document.getElementById('progress-list');
@@ -12,11 +13,12 @@ const onHoldList = document.getElementById('on-hold-list');
 // Items
 
 
-// Initialize Arrays
+// Initialize Arrays (stores data for each of our lists)
 let backlogListArray = [];
 let progressListArray = [];
 let completeListArray = [];
 let onHoldListArray = [];
+let listArrays =[];
 
 // Drag Functionality
 
@@ -34,14 +36,24 @@ function getSavedColumns() {
     completeListArray = ['Being cool', 'Getting stuff done'];
     onHoldListArray = ['Being uncool'];
   }
-}
+} 
+
+getSavedColumns();
+updateSavedColumns();
 
 // Set localStorage Arrays
 function updateSavedColumns() {
-  localStorage.setItem('backlogItems', JSON.stringify(backlogListArray));
-  localStorage.setItem('progressItems', JSON.stringify(progressListArray));
-  localStorage.setItem('completeItems', JSON.stringify(completeListArray));
-  localStorage.setItem('onHoldItems', JSON.stringify(onHoldListArray));
+listArrays=[backlogListArray,progressListArray,completeListArray,onHoldListArray];
+
+const arrayNames = ['backlog','progress', 'complete','onHold'];
+arrayNames.forEach((arrayNames,index)=>{
+    localStorage.setItem(`${arrayName}Items`,JSON.stringify(listArrays[index]));
+});
+
+//   localStorage.setItem('backlogItems', JSON.stringify(backlogListArray));
+//   localStorage.setItem('progressItems', JSON.stringify(progressListArray));
+//   localStorage.setItem('completeItems', JSON.stringify(completeListArray));
+//   localStorage.setItem('onHoldItems', JSON.stringify(onHoldListArray));
 }
 
 // Create DOM Elements for each list item
