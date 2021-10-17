@@ -11,6 +11,7 @@ const completeList = document.getElementById('complete-list');
 const onHoldList = document.getElementById('on-hold-list');
 
 // Items
+let updatedOnLoad = false;
 
 
 // Initialize Arrays (stores data for each of our lists)
@@ -38,8 +39,6 @@ function getSavedColumns() {
   }
 } 
 
-getSavedColumns();
-updateSavedColumns();
 
 // Set localStorage Arrays
 function updateSavedColumns() {
@@ -47,7 +46,7 @@ listArrays=[backlogListArray,progressListArray,completeListArray,onHoldListArray
 
 const arrayNames = ['backlog','progress', 'complete','onHold'];
 arrayNames.forEach((arrayNames,index)=>{
-    localStorage.setItem(`${arrayName}Items`,JSON.stringify(listArrays[index]));
+    localStorage.setItem(`${arrayNames}Items`,JSON.stringify(listArrays[index]));
 });
 
 //   localStorage.setItem('backlogItems', JSON.stringify(backlogListArray));
@@ -65,15 +64,24 @@ function createItemEl(columnEl, column, item, index) {
   // List Item
   const listEl = document.createElement('li');
   listEl.classList.add('drag-item');
+  listEl.textContent = item;
+
+//   Append
+columnEl.appendChild(listEl);
 
 }
 
 // Update Columns in DOM - Reset HTML, Filter Array, Update localStorage
 function updateDOM() {
   // Check localStorage once
-
+if(!updatedOnLoad){
+    getSavedColumns();
+}
   // Backlog Column
-
+backlogList.textContent = '';
+backlogListArray.forEach((backlogItems,index)=>{
+createItemEl(backlogList,0,backlogItems,index);
+});
   // Progress Column
 
   // Complete Column
@@ -85,3 +93,5 @@ function updateDOM() {
 
 }
 
+// On load
+updateDOM();
