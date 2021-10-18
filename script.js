@@ -66,8 +66,8 @@ function createItemEl(columnEl, column, item, index) {
   listEl.classList.add('drag-item');
   listEl.textContent = item;
 
-//   Append
-columnEl.appendChild(listEl);
+    //   Append
+    columnEl.appendChild(listEl);
 
 }
 
@@ -83,11 +83,20 @@ backlogListArray.forEach((backlogItems,index)=>{
 createItemEl(backlogList,0,backlogItems,index);
 });
   // Progress Column
-
+  progressList.textContent = '';
+  progressListArray.forEach((progressItems,index)=>{
+  createItemEl(progressList,0,progressItems,index);
+  });
   // Complete Column
-
+  completeList.textContent = '';
+  completeListArray.forEach((completeItems,index)=>{
+  createItemEl(completeList,0,completeItems,index);
+  });
   // On Hold Column
-
+  onHoldList.textContent = '';
+  onHoldListArray.forEach((onHoldItems,index)=>{
+  createItemEl(onHoldList,0,onHoldItems,index);
+  });
   // Run getSavedColumns only once, Update Local Storage
 
 
