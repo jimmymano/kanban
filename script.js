@@ -4,7 +4,7 @@ const saveItemBtns = document.querySelectorAll('.solid');
 const addItemContainers = document.querySelectorAll('.add-container');
 const addItems = document.querySelectorAll('.add-item');
 // Item Lists (Unodered lists that hold all our items)
-const itemLists = document.querySelectorAll('.drag-item-list');
+const listColumns = document.querySelectorAll('.drag-item-list');
 const backlogList = document.getElementById('backlog-list');
 const progressList = document.getElementById('progress-list');
 const completeList = document.getElementById('complete-list');
@@ -22,7 +22,8 @@ let onHoldListArray = [];
 let listArrays =[];
 
 // Drag Functionality
-
+let draggedItem;
+let currentColumn;
 
 // Get Arrays from localStorage if available, set default values if not
 function getSavedColumns() {
@@ -57,14 +58,17 @@ arrayNames.forEach((arrayNames,index)=>{
 
 // Create DOM Elements for each list item
 function createItemEl(columnEl, column, item, index) {
-  console.log('columnEl:', columnEl);
-  console.log('column:', column);
-  console.log('item:', item);
-  console.log('index:', index);
-  // List Item
+//   console.log('columnEl:', columnEl);
+//   console.log('column:', column);
+//   console.log('item:', item);
+//   console.log('index:', index);
+  // Create List Item, add drag-item class to list element, text content of list element is equal to item param
   const listEl = document.createElement('li');
   listEl.classList.add('drag-item');
   listEl.textContent = item;
+//   Makes list element draggable
+listEl.draggable = true;
+listEl.setAttribute('ondragstart','drag(event)')
 
     //   Append
     columnEl.appendChild(listEl);
@@ -102,5 +106,33 @@ createItemEl(backlogList,0,backlogItems,index);
 
 }
 
+// When Item Starts Dragging
+function drag(e){
+draggedItem = e.target;
+console.log('draggedItem:',draggedItem);
+}
+//When item enters column area
+function dragEnter(column){
+    // console.log(listColumns[column]);
+    listColumns[column].classList.add('over');
+    currentColumn = column;
+} 
+
+// Column allows for item to drop
+function allowDrop(e){
+    e.preventDefault();
+}
+// Dropping item in column
+function drop(e){
+    e.preventDefault();
+    // Remove background color/padding when dropped
+    listColumns.forEach((column)=>{
+        column.classList.remove('over');
+    })
+    
+    // Add item to column
+    const parent = listColumns[currentColumn];
+    parent.appendChild(draggedItem);
+}
 // On load
 updateDOM();
